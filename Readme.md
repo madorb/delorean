@@ -1,4 +1,4 @@
-##Delorean 
+# Delorean 
 Delorean: a Time Machine for your Spring Boot based applications. 
  
 Delorean provides a mechanism and approach that enables both automated and manual integration testing of your application's behaviour as of any date/time without having to adjust your environment/system clock. No Plutonium required.
@@ -28,9 +28,26 @@ Additionally Delorean provides the ability to easily configure a request-persist
 Delorean requires Java >= 8 and has been tested against Spring Boot 1.4.x (though it should work with earlier versions) and presently only provides results using Java 8 `java.time` classes - though support for legacy applications using `Joda-Time` is a potential future enhancement.
 
 ## Usage
-In order to use Delorean you must first add it to your project dependencies  (It is not yet added to Maven Central, but will be shortly)
+In order to use Delorean you must first add it to your project dependencies. You must first add JCenter to your list of repositories and then include the dependency
 
-Maven:
+### Maven
+
+Add: 
+```xml
+<repositories>
+    <repository>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+        <id>central</id>
+        <name>bintray</name>
+        <url>http://jcenter.bintray.com</url>
+    </repository>
+</repositories>
+``` 
+
+to your pom.xml or settings.xml and then import the dependency:
+
 ```xml
 <dependency>
   <groupId>com.slalom.delorean</groupId>
@@ -39,7 +56,15 @@ Maven:
 </dependency>
 ```
 
-Gradle:
+### Gradle
+Add:
+```groovy
+repositories {
+    jcenter()
+}
+```
+to your build.gradle and then import the dependency:
+
 ```groovy
 compile 'com.slalom.delorean:delorean:1.0.0'
 ```
@@ -52,7 +77,7 @@ If Cookie support is enabled a Spring `@Controller` is AutoConfigured to allow t
 
 Additionally Delorean will automatically register outbound Http Request Interceptors into the Spring `ApplicationContext` for Spring `RestTemplate`, `OkHttpClient` and Apache `HttpClient` if the appropriate libraries are found on the classpath.
 
-###RestTemplate
+### RestTemplate
 
 ```java
 @Autowired
@@ -60,14 +85,14 @@ private SpringRestTemplateTimeMachineOutboundRequestInterceptor restTemplateInte
 ...
 RestTemplate template = new RestTemplateBuilder().additionalInterceptors(restTemplateInterceptor).build();
 ```
-###OkHttp3
+### OkHttp3
 ```java
 @Autowired
 private OkHttp3OutboundTimeMachineRequestInterceptor okHttpInterceptor;
 ...
 OkHttpClient client = new OkHttpClient.Builder().addInterceptor(okHttpInterceptor).build()
 ```
-###Apache HttpClient
+### Apache HttpClient
 ```java
 @Autowired
 private ApacheHttpClientOutboundTimeMachineRequestInterceptor apacheInterceptor
